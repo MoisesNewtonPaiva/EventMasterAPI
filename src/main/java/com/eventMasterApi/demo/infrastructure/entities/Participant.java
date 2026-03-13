@@ -30,7 +30,10 @@ public class Participant {
     private String email;
 
     @ManyToMany
-    @JoinTable(name = "activities_participants")
+    @JoinTable(name = "activities")
     private List<Activity> activities;
 
+    @ManyToMany
+    @JoinTable(name = "events")
+    private List<Event> events;
 }

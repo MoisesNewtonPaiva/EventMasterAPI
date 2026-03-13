@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,10 @@ public class Event {
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
     private List<Activity> activities;
+
+    @ManyToMany(mappedBy = "events")
+    private List<Participant> participants;
+
 
 
 }

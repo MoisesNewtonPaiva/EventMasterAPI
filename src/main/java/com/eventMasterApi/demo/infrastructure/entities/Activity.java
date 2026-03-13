@@ -32,7 +32,7 @@ public class Activity {
     private String date;
 
     @ManyToOne
-    @JoinColumn(name = "event_id")
+    @JoinColumn(name = "event")
     private Event event;
 
     @ManyToMany(mappedBy = "activities")
