@@ -3,11 +3,10 @@ package com.eventMasterApi.demo.controller;
 import java.net.URI;
 import java.util.List;
 
-import org.springframework.boot.web.server.servlet.context.ServletComponentScan;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
-import com.eventMasterApi.demo.infrastructure.entities.Event;
+import com.eventMasterApi.demo.DTO.EventDTO;
 import com.eventMasterApi.demo.infrastructure.service.EventService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,8 +27,8 @@ public class EventController {
     }
 
     @PostMapping("/events/insert")
-    public ResponseEntity<Event> insertEvent(@RequestBody Event event) {
-        Event insertEvent = service.insertEvent(event);
+    public ResponseEntity<EventDTO> insertEvent(@RequestBody EventDTO event) {
+        EventDTO insertEvent = service.insertEvent(event);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
         .path("/{id}")
@@ -41,13 +40,13 @@ public class EventController {
 
  
     @GetMapping("/events")
-    public ResponseEntity<List<Event>> findAllEvents() {
-        List<Event> events = service.findAllEvents();
+    public ResponseEntity<List<EventDTO>> findAllEvents() {
+        List<EventDTO> events = service.findAllEvents();
         return ResponseEntity.ok(events);
     }
 
     @GetMapping("/events/{id}")
-    public ResponseEntity<Event> findEventById(@PathVariable Long id) {
+    public ResponseEntity<EventDTO> findEventById(@PathVariable Long id) {
         return service.findEventById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
