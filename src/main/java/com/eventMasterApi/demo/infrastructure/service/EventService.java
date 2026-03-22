@@ -1,6 +1,9 @@
 package com.eventMasterApi.demo.infrastructure.service;
 
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +25,17 @@ public class EventService {
         
         if (eventRepository.findByNameContainingIgnoreCase(event.getName()) != null) {
             throw new ResourceNotFoundException();
+        } else {
+            return eventRepository.save(event);
         }
-        return eventRepository.save(event);
+    }
+
+    public List<Event> findAllEvents() {
+        return eventRepository.findAll();
+    }
+
+    public Optional<Event> findEventById(Long id) {
+        return eventRepository.findById(id);
     }
 
 }
