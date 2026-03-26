@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
@@ -30,10 +31,18 @@ public class Participant {
     private String email;
 
     @ManyToMany
-    @JoinTable(name = "activities")
+    @JoinTable(
+        name = "participants_activities", 
+        joinColumns = @JoinColumn(name = "participant_id"),
+        inverseJoinColumns = @JoinColumn(name = "activity_id")
+    )
     private List<Activity> activities;
 
+
     @ManyToMany
-    @JoinTable(name = "events")
+    @JoinTable(name = "events_participants",
+        joinColumns = @JoinColumn(name = "participant_id"),
+        inverseJoinColumns = @JoinColumn(name = "event_id")
+    )
     private List<Event> events;
 }

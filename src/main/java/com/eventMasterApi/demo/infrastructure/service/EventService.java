@@ -2,6 +2,8 @@ package com.eventMasterApi.demo.infrastructure.service;
 
 
 import com.eventMasterApi.demo.infrastructure.repository2.ActivityRepository;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,20 +36,23 @@ public class EventService {
 
     @Transactional
     public EventDTO insertEvent(EventDTO dto) {
-        
-        if (eventRepository.findByNameContainingIgnoreCase(dto.name()) != null) {
-            throw new ResourceNotFoundException();
-        } else {
-            Event event = new Event();
-            event.setName(dto.name());
-            event.setData(dto.data());
-            event.setPrice(dto.price());
-            event.setDescription(dto.description());
-
-            Event savedEvent = eventRepository.save(event);
-
-            return convertToDTO(savedEvent);
+        var existingEvent = eventRepository.findByNameIgnoreCase(dto.name());
+    
+        if (!existingEvent.isEmpty()) {
+            throw new DataBaseException("An event with the name '" + dto.name() + "' already exists.");
         }
+
+        Event event = new Event();
+        event.setName(dto.name());
+        event.setData(dto.data());
+        event.setPrice(dto.price());
+        event.setDescription(dto.description());
+
+        event.setActivities(new ArrayList<>()); 
+        event.setParticipants(new ArrayList<>());
+
+        Event savedEvent = eventRepository.save(event);
+        return convertToDTO(savedEvent);
     }
 
     public List<EventDTO> findAllEvents() {
@@ -56,7 +61,9 @@ public class EventService {
             event.getName(),
             event.getData(),
             event.getPrice(),
-            event.getDescription()
+            event.getDescription(),
+            event.getActivities(),
+            event.getParticipants().stream().map(participant -> participant.getId()).toList()
         )).toList();
     }
 
@@ -66,7 +73,9 @@ public class EventService {
             event.getName(),
             event.getData(),
             event.getPrice(),
-            event.getDescription()
+            event.getDescription(),
+            event.getActivities(),
+            event.getParticipants().stream().map(participant -> participant.getId()).toList()
         ));
     }
 
@@ -80,7 +89,7 @@ public class EventService {
             event.setPrice(dto.price());
             event.setDescription(dto.description());
 
-            EventDTO updatedDTO =convertToDTO(eventRepository.save(event));
+            EventDTO updatedDTO = convertToDTO(eventRepository.save(event));
 
             return ResponseEntity.ok(updatedDTO);
 
@@ -95,7 +104,9 @@ public class EventService {
             event.getName(),
             event.getData(),
             event.getPrice(),
-            event.getDescription()
+            event.getDescription(),
+            event.getActivities(),
+            event.getParticipants().stream().map(participant -> participant.getId()).toList()
         );
     }
     

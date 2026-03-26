@@ -1,5 +1,6 @@
 package com.eventMasterApi.demo.infrastructure.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -7,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -33,10 +36,14 @@ public class Event {
     private String description;
 
     @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    private List<Activity> activities;
+    private List<Activity> activities = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "events")
-    private List<Participant> participants;
+    @ManyToMany
+    @JoinTable(
+    name = "events_participants", joinColumns = @JoinColumn(name = "event_id"),
+    inverseJoinColumns = @JoinColumn(name = "participant_id")
+    )
+    private List<Participant> participants = new ArrayList<>();
 
 
 

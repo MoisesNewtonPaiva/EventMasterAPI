@@ -8,6 +8,6 @@ import com.eventMasterApi.demo.infrastructure.entities.Event;
 
 public interface EventRepository extends JpaRepository<Event, Long>{
     
-    public List<Event> findByNameContainingIgnoreCase(String name);
-    public boolean existsByNameContainingIgnoreCase(String name);
+    public List<Event> findByNameIgnoreCase(String name);
+    public boolean existsByNameIgnoreCase(String name);
 }
