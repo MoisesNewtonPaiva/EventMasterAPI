@@ -1,5 +1,6 @@
 package com.eventMasterApi.demo.infrastructure.entities;
 
+import java.time.Instant;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -29,7 +30,7 @@ public class Activity {
     
     private String title;
     private String description;
-    private String date;
+    private Instant date;
 
     @ManyToOne
     @JoinColumn(name = "events")

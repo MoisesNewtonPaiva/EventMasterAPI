@@ -33,26 +33,43 @@ public class EventService {
         this.activityRepository = activityRepository;
     }
 
+    private EventDTO convertToDTO(Event event) {
+        return new EventDTO(
+            event.getId(),
+            event.getName(),
+            event.getData(),
+            event.getPrice(),
+            event.getDescription(),
+            event.getActivities(),
+            event.getParticipants().stream().map(participant -> participant.getId()).toList()
+        );
+    }
+
 
     @Transactional
     public EventDTO insertEvent(EventDTO dto) {
+        // Validação antes de operação no banco
         var existingEvent = eventRepository.findByNameIgnoreCase(dto.name());
     
         if (!existingEvent.isEmpty()) {
             throw new DataBaseException("An event with the name '" + dto.name() + "' already exists.");
         }
 
-        Event event = new Event();
-        event.setName(dto.name());
-        event.setData(dto.data());
-        event.setPrice(dto.price());
-        event.setDescription(dto.description());
+        try {
+            Event event = new Event();
+            event.setName(dto.name());
+            event.setData(dto.data());
+            event.setPrice(dto.price());
+            event.setDescription(dto.description());
 
-        event.setActivities(new ArrayList<>()); 
-        event.setParticipants(new ArrayList<>());
+            event.setActivities(new ArrayList<>()); 
+            event.setParticipants(new ArrayList<>());
 
-        Event savedEvent = eventRepository.save(event);
-        return convertToDTO(savedEvent);
+            Event savedEvent = eventRepository.save(event);
+            return convertToDTO(savedEvent);
+        } catch (Exception e) {
+            throw new DataBaseException("Error saving event: " + e.getMessage());
+        }
     }
 
     public List<EventDTO> findAllEvents() {
@@ -96,18 +113,6 @@ public class EventService {
         } catch (ResourceNotFoundException e) {
             throw e;
         }
-    }
-
-    private EventDTO convertToDTO(Event event) {
-        return new EventDTO(
-            event.getId(),
-            event.getName(),
-            event.getData(),
-            event.getPrice(),
-            event.getDescription(),
-            event.getActivities(),
-            event.getParticipants().stream().map(participant -> participant.getId()).toList()
-        );
     }
     
     @Transactional

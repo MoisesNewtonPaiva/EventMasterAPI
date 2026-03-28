@@ -8,7 +8,7 @@ import com.eventMasterApi.demo.infrastructure.entities.Activity;
 
 public interface ActivityRepository extends JpaRepository<Activity, Long> {
 
-    public boolean existsByTitleContainingIgnoreCase(String title);
+    public boolean existsByTitleIgnoreCase(String title);
 
-    public List<Activity> findByTitleContainingIgnoreCase(String title);
+    public List<Activity> findByTitleIgnoreCase(String title);
 }
