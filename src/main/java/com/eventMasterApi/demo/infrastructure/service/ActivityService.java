@@ -118,6 +118,7 @@ public class ActivityService {
         }
    }
 
+   @Transactional
    public String deleteActivity(Long id) {
         Optional<Activity> existingActivityOpt = repository.findById(id);
 
