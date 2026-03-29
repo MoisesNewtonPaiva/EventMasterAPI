@@ -3,7 +3,7 @@
 API REST para gerenciamento de eventos, atividades e participantes, desenvolvida com foco em **Clean Architecture** e boas práticas de desenvolvimento Java.
 
 ## 🚀 Tecnologias e Ferramentas
-* **Java 17** (Records, Streams API)
+* **Java 21** 
 * **Spring Boot 3**
 * **Spring Data JPA**
 * **H2 Database** (Banco de dados em memória para fácil execução)
