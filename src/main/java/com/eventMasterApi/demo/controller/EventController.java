@@ -34,14 +34,14 @@ public class EventController {
 
     @PostMapping
     public ResponseEntity<EventDTO> insertEvent(@RequestBody EventDTO event) {
-        EventDTO insertEvent = service.insertEvent(event);
+        EventDTO insertEvent = service.insertEvent(event).getBody();
 
         URI uri = ServletUriComponentsBuilder.fromCurrentContextPath() 
             .path("/api/events/{id}")
             .buildAndExpand(insertEvent.id())
             .toUri();
             
-        return ResponseEntity.ok(insertEvent);
+        return ResponseEntity.created(uri).body(insertEvent);
     }
 
  

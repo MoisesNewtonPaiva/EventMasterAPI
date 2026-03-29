@@ -47,7 +47,7 @@ public class EventService {
 
 
     @Transactional
-    public EventDTO insertEvent(EventDTO dto) {
+    public ResponseEntity<EventDTO> insertEvent(EventDTO dto) {
         // Validação antes de operação no banco
         var existingEvent = eventRepository.findByNameIgnoreCase(dto.name());
     
@@ -66,7 +66,7 @@ public class EventService {
             event.setParticipants(new ArrayList<>());
 
             Event savedEvent = eventRepository.save(event);
-            return convertToDTO(savedEvent);
+            return ResponseEntity.ok(convertToDTO(savedEvent));
         } catch (Exception e) {
             throw new DataBaseException("Error saving event: " + e.getMessage());
         }

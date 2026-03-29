@@ -8,5 +8,5 @@ import com.eventMasterApi.demo.infrastructure.entities.Participant;
 
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
 
-    public List<Participant> findByNameContainingIgnoreCase(String name);
+    public List<Participant> findByNameIgnoreCase(String name);
 }
